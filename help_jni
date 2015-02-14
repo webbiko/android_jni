@@ -1,0 +1,31 @@
+JNI - Java Native Interface
+
+Para trabalhar com jni para android é necessário o uso do NDK tool
+Referência : http://developer.android.com/tools/sdk/ndk/index.html
+
+Para criar um projeto android JNI os seguintes passos são necessários:
+1) Criar projeto android
+2) Criar pasta na raiz do projeto android com o nome de jni (tudo minusculo)
+3) Criar uma classe java que tenha um método native
+4) Gerar o header file com o comando javah -jni class
+	4.1) Entre no console e acesse a pasta bin/classes do projeto
+	4.2) digite o comando javah -jni com.mypackage.MyJniClass
+	     Ex: suponhamos que o package que contenha a classe que tem método nativo seja com/web/calculator/jni/CalculatorJNI.java
+	     então o comando deve ser executado de dentro da pasta bin/classes/ : javah -jni com.web.calculator.jni.CalculatorJNI
+	     Em seguida um header file será gerado dentro da pasta bin/classes : com.web.calculator.jni.CalculatorJNI.h
+
+	     Esse método deve ser usado para gerar a classe .c que contém a implementação do método declarado no arquivo .h
+	     Um arquivo Android.mk e Application.mk deve ser criado
+5) entrar na raiz do projeto através do console e digitar ndk-build (considerando que vc ja instalou o ndk de acordo com a referencia citada no inicio desse arquivo)
+	Após executar o comando arquivo libCalculatorImpl.so é gerado em várias pastas (plataformas armeabi, arm64, etc) dentro de libs
+	Após isso ké possivel rodar a app adnroid
+
+Uma aplicação java puro é necessário adicionar -Djava.library.path=libs como argumento da vm. Run Configuration -> Arguments -> VM Arguments
+
+Exemplo da implementação java e android pode ser encontrado em: https://github.com/webbiko/android_jni
+Mais referencias:
+1) http://docs.oracle.com/javase/6/docs/technotes/guides/jni/spec/types.html
+2) https://thenewcircle.com/static/bookshelf/java_fundamentals_tutorial/_java_native_interface_jni.html
+3) https://www3.ntu.edu.sg/home/ehchua/programming/java/JavaNativeInterface.html // o mais completo
+4) https://www.youtube.com/watch?v=tDhOPYi-rYE
+5) https://www.youtube.com/watch?v=Ki04XdNsNZY
